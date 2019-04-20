@@ -44,4 +44,21 @@ class ContainerTest extends FlatSpec {
       case null => false
     })
   }
+
+  "Given Trait" should "return instance (with recursion but not needed)" in {
+    val container = new Container()
+      .config()
+      .register[TestClass]
+      .as[TestTrait]
+      .config()
+      .instance(new TestClass)
+      .as[TestTrait]
+
+    val instance = container.resolve[TestRecClass]
+
+    assert(instance match {
+      case _: TestRecClass => true
+      case null => false
+    })
+  }
 }
